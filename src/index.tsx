@@ -1,12 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import App from './components/App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+const promoData = {
+  promoTitle: 'The Grand Budapest Hotel',
+  promoGenre: 'Drama',
+  promoReleaseDate: '2014',
+};
+
 root.render(
   <React.StrictMode>
-    <h1>Hello, World!</h1>
+    <App
+      promoTitle={promoData.promoTitle}
+      promoGenre={promoData.promoGenre}
+      promoReleaseDate={promoData.promoReleaseDate}
+    />
   </React.StrictMode>
 );
+

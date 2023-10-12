@@ -1,4 +1,3 @@
-import React from 'react';
 import MovieCard from '../MovieCard';
 import {Genres, PromoFilm, Footer} from '../MainPageUtils';
 

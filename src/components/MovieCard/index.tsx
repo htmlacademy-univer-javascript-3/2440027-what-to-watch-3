@@ -1,5 +1,3 @@
-import React from 'react';
-
 type MovieCardProps = {
     imageSrc: string;
     title: string;

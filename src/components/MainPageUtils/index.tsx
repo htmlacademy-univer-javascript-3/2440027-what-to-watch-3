@@ -1,5 +1,3 @@
-import React from 'react';
-
 type GenresProps = {
   genres: string[];
   activeGenre: string;

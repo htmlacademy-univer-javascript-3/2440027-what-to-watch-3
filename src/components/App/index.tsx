@@ -1,12 +1,12 @@
-import MainPage from '../MainPage';
+import MainPage from '../MainPage/index.tsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NotFoundPage from '../Utils';
+import NotFoundPage from '../Utils/index.tsx';
 import SignIn from '../login/sign-in.tsx';
 import MyList from '../myList/my-list.tsx';
 import Film from '../films/films.tsx';
 import AddReview from '../review/add-review.tsx';
 import Player from '../player/player.tsx';
-import {ProtectedWrapper} from '../Utils';
+import {ProtectedWrapper} from '../Utils/index.tsx';
 
 type AppProps = {
   promoTitle: string;

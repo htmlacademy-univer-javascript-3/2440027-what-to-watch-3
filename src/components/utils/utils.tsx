@@ -1,3 +1,8 @@
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+
+
 function NotFoundPage() {
   return (
     <div>
@@ -11,17 +16,13 @@ function NotFoundPage() {
 export default NotFoundPage;
 
 
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-
 type ProtectedWrapperProps = {
   children: React.ReactNode;
 }
 
 export const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
   const navigate = useNavigate();
-  const isAuthorized = false; // Симулируем отсутствие авторизации
+  const isAuthorized = true; // TODO вернуть false
 
   useEffect(() => {
     if (!isAuthorized) {

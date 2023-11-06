@@ -1,24 +1,23 @@
 import React from 'react';
-import {Footer} from '../MainPageUtils';
+import { useParams, Link } from 'react-router-dom';
+import { Footer } from '../main-page-utils/utils';
+import { BaseFilm } from '../../mocks/films';
 
-//interface FilmPageProps {
-//  match: {
-//    params: {
-//      id: string;
-//    };
-//  };
-//}
 
-function Film() {
-  //props: FilmPageProps
-//  const filmId = props.match.params.id; // Уникальный идентификатор фильма из URL
+function Film({ films: films }: { films: BaseFilm[]}) {
+  const { id } = useParams();
+  const film = films.find((f: { id: string | undefined }) => f.id === id);
+
+  if (!film) {
+    return <div>Film not found</div>;
+  }
 
   return (
     <React.Fragment>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src="/img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+            <img src={film.imageSrc} alt={film.title} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -46,27 +45,31 @@ function Film() {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">The Grand Budapest Hotel</h2>
+              <h2 className="film-card__title">{film.title}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">Drama</span>
-                <span className="film-card__year">2014</span>
+                <span className="film-card__genre">{film.genre}</span>
+                <span className="film-card__year">1111</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <Link to={`/player/${film.id}`} className="btn btn--play film-card__button">
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
+                </Link>
+
+                <Link to={'/mylist'} className="btn btn--play film-card__button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
                   <span className="film-card__count">9</span>
-                </button>
-                <a href="#" className="btn film-card__button">Add review</a>
+                </Link>
+
+                <Link to={`/films/${film.id}/review`} className="btn film-card__button">
+                  Add review
+                </Link>
               </div>
             </div>
           </div>
@@ -75,7 +78,7 @@ function Film() {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src="/img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={film.imageSrc} alt={film.title} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
@@ -102,12 +105,8 @@ function Film() {
               </div>
 
               <div className="film-card__text">
-                <p>In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave`s friend and protege.</p>
-
-                <p>Gustave prides himself on providing first-class service to the hotel`s guests, including satisfying the sexual needs of the many elderly women who stay there. When one of Gustave`s lovers dies mysteriously, Gustave finds himself the recipient of a priceless painting and the chief suspect in her murder.</p>
-
+                <p>{film.description}</p>
                 <p className="film-card__director"><strong>Director: Wes Anderson</strong></p>
-
                 <p className="film-card__starring"><strong>Starring: Bill Murray, Edward Norton, Jude Law, Willem Dafoe and other</strong></p>
               </div>
             </div>
@@ -125,7 +124,9 @@ function Film() {
                 <img src="/img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="#">Fantastic Beasts: The Crimes of Grindelwald</a>
+                <Link to={'/films/1'} className="small-film-card__link">
+                  {'Fantastic Beasts: The Crimes of Grindelwald'}
+                </Link>
               </h3>
             </article>
 
@@ -134,7 +135,9 @@ function Film() {
                 <img src="/img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="#">Bohemian Rhapsody</a>
+                <Link to={'/films/2'} className="small-film-card__link">
+                  {'Bohemian Rhapsody'}
+                </Link>
               </h3>
             </article>
 
@@ -143,7 +146,9 @@ function Film() {
                 <img src="/img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="#">Macbeth</a>
+                <Link to={'/films/3'} className="small-film-card__link">
+                  {'Macbeth'}
+                </Link>
               </h3>
             </article>
 
@@ -152,7 +157,9 @@ function Film() {
                 <img src="/img/aviator.jpg" alt="Aviator" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="#">Aviator</a>
+                <Link to={'/films/4'} className="small-film-card__link">
+                  {'Aviator'}
+                </Link>
               </h3>
             </article>
           </div>

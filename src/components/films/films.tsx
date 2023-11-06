@@ -4,9 +4,9 @@ import { Footer } from '../main-page-utils/utils';
 import { BaseFilm } from '../../mocks/films';
 
 
-function Film({ films: films }: { films: BaseFilm[];}) {
-  let { id } = useParams();
-  let film = films.find((f: { id: string | undefined; }) => f.id === id);
+function Film({ films: films }: { films: BaseFilm[]}) {
+  const { id } = useParams();
+  const film = films.find((f: { id: string | undefined }) => f.id === id);
 
   if (!film) {
     return <div>Film not found</div>;
@@ -52,14 +52,14 @@ function Film({ films: films }: { films: BaseFilm[];}) {
               </p>
 
               <div className="film-card__buttons">
-              <Link to={`/player/${film.id}`} className="btn btn--play film-card__button">
+                <Link to={`/player/${film.id}`} className="btn btn--play film-card__button">
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-              </Link>
+                </Link>
 
-                <Link to={`/mylist`} className="btn btn--play film-card__button">
+                <Link to={'/mylist'} className="btn btn--play film-card__button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
@@ -67,9 +67,9 @@ function Film({ films: films }: { films: BaseFilm[];}) {
                   <span className="film-card__count">9</span>
                 </Link>
 
-              <Link to={`/films/${film.id}/review`} className="btn film-card__button">
+                <Link to={`/films/${film.id}/review`} className="btn film-card__button">
                   Add review
-              </Link>
+                </Link>
               </div>
             </div>
           </div>
@@ -124,8 +124,8 @@ function Film({ films: films }: { films: BaseFilm[];}) {
                 <img src="/img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <Link to={`/films/1`} className="small-film-card__link">
-                  {"Fantastic Beasts: The Crimes of Grindelwald"}
+                <Link to={'/films/1'} className="small-film-card__link">
+                  {'Fantastic Beasts: The Crimes of Grindelwald'}
                 </Link>
               </h3>
             </article>
@@ -135,8 +135,8 @@ function Film({ films: films }: { films: BaseFilm[];}) {
                 <img src="/img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <Link to={`/films/2`} className="small-film-card__link">
-                  {"Bohemian Rhapsody"}
+                <Link to={'/films/2'} className="small-film-card__link">
+                  {'Bohemian Rhapsody'}
                 </Link>
               </h3>
             </article>
@@ -146,8 +146,8 @@ function Film({ films: films }: { films: BaseFilm[];}) {
                 <img src="/img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <Link to={`/films/3`} className="small-film-card__link">
-                  {"Macbeth"}
+                <Link to={'/films/3'} className="small-film-card__link">
+                  {'Macbeth'}
                 </Link>
               </h3>
             </article>
@@ -157,8 +157,8 @@ function Film({ films: films }: { films: BaseFilm[];}) {
                 <img src="/img/aviator.jpg" alt="Aviator" width="280" height="175" />
               </div>
               <h3 className="small-film-card__title">
-                <Link to={`/films/4`} className="small-film-card__link">
-                  {"Aviator"}
+                <Link to={'/films/4'} className="small-film-card__link">
+                  {'Aviator'}
                 </Link>
               </h3>
             </article>

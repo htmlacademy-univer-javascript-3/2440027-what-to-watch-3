@@ -1,5 +1,5 @@
-import { films } from "../../mocks/films";
-import MovieList from "../movie-list/movie-list";
+import { films } from '../../mocks/films';
+import MovieList from '../movie-list/movie-list';
 
 
 function MyList() {
@@ -28,8 +28,8 @@ function MyList() {
       </header>
 
       <section className="catalog">
-      <h2 className="catalog__title visually-hidden">Catalog</h2>
-      <MovieList movies={films} />
+        <h2 className="catalog__title visually-hidden">Catalog</h2>
+        <MovieList movies={films} />
       </section>
 
       <footer className="page-footer">

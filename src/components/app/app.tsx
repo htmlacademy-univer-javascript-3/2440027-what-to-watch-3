@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 import MainPage from '../main-page/main-page.tsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NotFoundPage from '../utils/utils.tsx';

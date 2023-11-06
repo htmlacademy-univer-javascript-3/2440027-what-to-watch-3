@@ -9,8 +9,8 @@ type AddReviewProps = {
 
 function AddReview({ films }: AddReviewProps) {
   const { id } = useParams<{ id: string }>();
-  const film = films.find((film) => film.id === id) ?? films[0];
-  
+  const film = films.find((_film) => _film.id === id) ?? films[0];
+
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">

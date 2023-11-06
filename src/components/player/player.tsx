@@ -10,6 +10,7 @@ type PlayerProps = {
 
 function Player({ films }: PlayerProps) {
   const { id } = useParams<{ id: string }>();
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const film = films.find((film) => film.id === id) ?? films[0];
 
   return (

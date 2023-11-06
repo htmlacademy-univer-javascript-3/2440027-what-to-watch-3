@@ -3,7 +3,6 @@ function SignInError() {
     <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
-          {/* Пока что я использую заглушку для ссылки, вы можете заменить ее позже */}
           <a href="#" className="logo__link">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>
@@ -34,7 +33,6 @@ function SignInError() {
       </div>
       <footer className="page-footer">
         <div className="logo">
-          {/* Пока что я использую заглушку для ссылки, вы можете заменить ее позже */}
           <a href="#" className="logo__link logo__link--light">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>

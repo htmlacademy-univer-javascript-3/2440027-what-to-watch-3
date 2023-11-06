@@ -1,16 +1,27 @@
 
-function Player() {
+import { Link, useParams } from 'react-router-dom';
+import { BaseFilm } from '../../mocks/films';
+
+
+type PlayerProps = {
+  films: BaseFilm[];
+};
+
+
+function Player({ films }: PlayerProps) {
+  const { id } = useParams<{ id: string }>();
+  const film = films.find((film) => film.id === id) ?? films[0];
+
   return (
     <div className="player">
-      <video src="#" className="player__video" poster="/img/player-poster.jpg"></video>
-
-      <button type="button" className="player__exit">Exit</button>
+      <video src={film.trailer} className="player__video" poster={film.imageSrc}></video>
+      <Link to={'/'} className="player__exit">Exit</Link>
 
       <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
             <progress className="player__progress" value="30" max="100"></progress>
-            <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
+            <div className="player__toggler" style={{ left: '30%' }}>Toggler</div>
           </div>
           <div className="player__time-value">1:30:29</div>
         </div>
@@ -22,7 +33,7 @@ function Player() {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{film.title}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">

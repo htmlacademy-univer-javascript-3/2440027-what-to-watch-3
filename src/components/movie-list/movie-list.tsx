@@ -19,7 +19,7 @@ type MoviesListProps = {
 
 function MoviesList({ movies }: MoviesListProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeCard, setActiveCard] = useState<string | null>(null);
+  const [, setActiveCard] = useState<string | null>(null);
 
   return (
     <div className="catalog__films-list">

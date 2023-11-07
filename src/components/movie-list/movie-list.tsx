@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import MovieCard from '../movie-card/movie-card';
-
 
 type Movie = {
   id: string;
@@ -16,11 +14,7 @@ type MoviesListProps = {
   movies: Movie[];
 };
 
-
 function MoviesList({ movies }: MoviesListProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [, setActiveCard] = useState<string | null>(null);
-
   return (
     <div className="catalog__films-list">
       {movies.map((movie) => (
@@ -29,11 +23,7 @@ function MoviesList({ movies }: MoviesListProps) {
           id={movie.id}
           title={movie.title}
           imageSrc={movie.imageSrc}
-          description={movie.description}
-          releaseDate={movie.releaseDate}
-          genre={movie.genre}
-          onMouseEnter={() => setActiveCard(movie.id)}
-          onMouseLeave={() => setActiveCard(null)}
+          trailerSrc={movie.trailer}
         />
       ))}
     </div>

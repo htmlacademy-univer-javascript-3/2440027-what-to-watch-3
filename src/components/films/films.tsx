@@ -2,6 +2,22 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Footer } from '../main-page-utils/utils';
 import { BaseFilm } from '../../mocks/films';
+import Tabs from '../tabs/tabs';
+import MoviesList from '../movie-list/movie-list';
+
+
+function getSimilarMovies(films: BaseFilm[], currentFilm: BaseFilm, count = 4) {
+  // Разбиваем строку жанров текущего фильма на массив жанров
+  const currentGenres = currentFilm.genre.split(', ');
+
+  return films.filter((f) => {
+    // Для каждого фильма также разбиваем строку жанров на массив
+    const filmGenres = f.genre.split(', ');
+
+    // Проверяем, есть ли совпадение хотя бы одного жанра с жанрами текущего фильма
+    return filmGenres.some((genre) => currentGenres.includes(genre)) && f.id !== currentFilm.id;
+  }).slice(0, count);
+}
 
 
 function Film({ films: films }: { films: BaseFilm[]}) {
@@ -11,6 +27,7 @@ function Film({ films: films }: { films: BaseFilm[]}) {
   if (!film) {
     return <div>Film not found</div>;
   }
+  const similarMovies = getSimilarMovies(films, film);
 
   return (
     <React.Fragment>
@@ -48,7 +65,7 @@ function Film({ films: films }: { films: BaseFilm[]}) {
               <h2 className="film-card__title">{film.title}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{film.genre}</span>
-                <span className="film-card__year">1111</span>
+                <span className="film-card__year">{film.releaseDate}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -82,33 +99,7 @@ function Film({ films: films }: { films: BaseFilm[]}) {
             </div>
 
             <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="#" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">8,9</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">Very good</span>
-                  <span className="film-rating__count">240 ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{film.description}</p>
-                <p className="film-card__director"><strong>Director: Wes Anderson</strong></p>
-                <p className="film-card__starring"><strong>Starring: Bill Murray, Edward Norton, Jude Law, Willem Dafoe and other</strong></p>
-              </div>
+              <Tabs film={film} />
             </div>
           </div>
         </div>
@@ -117,52 +108,8 @@ function Film({ films: films }: { films: BaseFilm[]}) {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
+          <MoviesList movies={similarMovies}></MoviesList>
 
-          <div className="catalog__films-list">
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="/img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to={'/films/1'} className="small-film-card__link">
-                  {'Fantastic Beasts: The Crimes of Grindelwald'}
-                </Link>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="/img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to={'/films/2'} className="small-film-card__link">
-                  {'Bohemian Rhapsody'}
-                </Link>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="/img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to={'/films/3'} className="small-film-card__link">
-                  {'Macbeth'}
-                </Link>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="/img/aviator.jpg" alt="Aviator" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <Link to={'/films/4'} className="small-film-card__link">
-                  {'Aviator'}
-                </Link>
-              </h3>
-            </article>
-          </div>
         </section>
 
         <Footer/>

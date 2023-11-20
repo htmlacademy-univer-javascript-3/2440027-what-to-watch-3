@@ -92,7 +92,7 @@ export const films: BaseFilm[] = [
     imageSrc: 'img/bohemian-rhapsody.jpg',
     description: 'The story of the legendary British rock band Queen and lead singer Freddie Mercury, leading up to their famous performance at Live Aid.',
     releaseDate: '2018-10-24',
-    genre: 'Biography, Drama, Music',
+    genre: 'Drama',
     trailer: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm',
     rating: 8.8,
     ratingLevel: 'Very good',

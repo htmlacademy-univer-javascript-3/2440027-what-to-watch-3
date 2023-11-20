@@ -1,18 +1,24 @@
-import {Genres, PromoFilm, Footer} from '../main-page-utils/utils';
-import { BaseFilm } from '../../mocks/films';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMoviesByGenre } from '../../store/action';
+import { RootState } from '../../store/state';
+import { Footer, Genres, PromoFilm } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
-
 
 type MainPageProps = {
   promoFilmTitle: string;
   promoFilmGenre: string;
   promoFilmReleaseDate: string;
-  films: BaseFilm[];
 }
 
-const genres = ['All genres', 'Comedies', 'Crime', 'Documentary', 'Dramas', 'Horror', 'Kids & Family', 'Romance', 'Sci-Fi', 'Thrillers'];
-
 function MainPage(props: MainPageProps) {
+  const dispatch = useDispatch();
+  const { genre, movies } = useSelector((state: RootState) => state.movies);
+
+  useEffect(() => {
+    dispatch(fetchMoviesByGenre(genre));
+  }, [genre, dispatch]);
+
 
   return (
     <div>
@@ -29,8 +35,8 @@ function MainPage(props: MainPageProps) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <Genres genres={genres} activeGenre="All genres" />
-          <MoviesList movies={props.films} />
+          <Genres />
+          <MoviesList movies={movies} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

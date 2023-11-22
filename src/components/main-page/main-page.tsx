@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMoviesByGenre } from '../../store/action';
+import { fetchMoviesByGenre, showMoreMovies } from '../../store/action';
 import { RootState } from '../../store/state';
 import { Footer, Genres, PromoFilm } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
+import ShowMoreButton from '../show-more-button/show-more-button';
+
 
 type MainPageProps = {
   promoFilmTitle: string;
@@ -13,7 +15,11 @@ type MainPageProps = {
 
 function MainPage(props: MainPageProps) {
   const dispatch = useDispatch();
-  const { genre, movies } = useSelector((state: RootState) => state.movies);
+  const { genre, movies, displayedMoviesCount } = useSelector((state: RootState) => state.movies);
+
+  const handleShowMoreClick = () => {
+    dispatch(showMoreMovies());
+  };
 
   useEffect(() => {
     dispatch(fetchMoviesByGenre(genre));
@@ -36,11 +42,13 @@ function MainPage(props: MainPageProps) {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
           <Genres />
-          <MoviesList movies={movies} />
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          <MoviesList movies={movies.slice(0, displayedMoviesCount)} />
+
+          <ShowMoreButton
+            onClick={handleShowMoreClick}
+            isVisible={displayedMoviesCount < movies.length}
+          />
         </section>
 
         <Footer />

@@ -28,7 +28,6 @@ function App(props: AppProps) {
               promoFilmTitle={props.promoTitle}
               promoFilmGenre={props.promoGenre}
               promoFilmReleaseDate={props.promoReleaseDate}
-              // films={films}
             />
           }
           />

@@ -1,22 +1,32 @@
-type GenresProps = {
-  genres: string[];
-  activeGenre: string;
-};
+import { useSelector, useDispatch } from 'react-redux';
+import { changeGenre } from '../../store/action';
+import { RootState } from '../../store/state';
 
-export function Genres(props: GenresProps) {
+
+export function Genres() {
+  const dispatch = useDispatch();
+  const movies = useSelector((state: RootState) => state.movies);
+
+  const uniqueGenres = ['All genres', ...new Set(movies.movies.map((film) => film.genre))];
+
+  const onGenreClick = (genre: string) => {
+    dispatch(changeGenre(genre));
+  };
+
   return (
     <ul className="catalog__genres-list">
-      {props.genres.map((genre) => (
+      {uniqueGenres.map((genre) => (
         <li
           key={genre}
-          className={`catalog__genres-item ${props.activeGenre === genre ? 'catalog__genres-item--active' : ''}`}
+          className="catalog__genres-item"
         >
-          <a href="#" className="catalog__genres-link">{genre}</a>
+          <div className="catalog__genres-link" onClick={() => onGenreClick(genre)}>{genre}</div>
         </li>
       ))}
     </ul>
   );
 }
+
 
 type HeaderProps = {
   userAvatarSrc: string;

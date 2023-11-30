@@ -1,10 +1,10 @@
 
 import { Link, useParams } from 'react-router-dom';
-import { BaseFilm } from '../../mocks/films';
+import { FilmShortDescription } from '../../types/film';
 
 
 type PlayerProps = {
-  films: BaseFilm[];
+  films: FilmShortDescription[];
 };
 
 
@@ -15,7 +15,7 @@ function Player({ films }: PlayerProps) {
 
   return (
     <div className="player">
-      <video src={film.trailer} className="player__video" poster={film.imageSrc}></video>
+      <video src={film.previewVideoLink} className="player__video" poster={film.previewImage}></video>
       <Link to={'/'} className="player__exit">Exit</Link>
 
       <div className="player__controls">
@@ -34,7 +34,7 @@ function Player({ films }: PlayerProps) {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">{film.title}</div>
+          <div className="player__name">{film.name}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">

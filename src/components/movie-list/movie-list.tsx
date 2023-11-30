@@ -1,17 +1,17 @@
 import MovieCard from '../movie-card/movie-card';
-
-type Movie = {
-  id: string;
-  title: string;
-  imageSrc: string;
-  description: string;
-  releaseDate: string;
-  genre: string;
-  trailer: string;
-};
+import { FilmShortDescription } from '../../types/film';
+// type Movie = {
+//   id: string;
+//   title: string;
+//   imageSrc: string;
+//   description: string;
+//   releaseDate: string;
+//   genre: string;
+//   trailer: string;
+// };
 
 type MoviesListProps = {
-  movies: Movie[];
+  movies: FilmShortDescription[];
 };
 
 function MoviesList({ movies }: MoviesListProps) {
@@ -21,9 +21,9 @@ function MoviesList({ movies }: MoviesListProps) {
         <MovieCard
           key={movie.id}
           id={movie.id}
-          title={movie.title}
-          imageSrc={movie.imageSrc}
-          trailerSrc={movie.trailer}
+          title={movie.name}
+          imageSrc={movie.previewImage}
+          trailerSrc={movie.previewVideoLink}
         />
       ))}
     </div>

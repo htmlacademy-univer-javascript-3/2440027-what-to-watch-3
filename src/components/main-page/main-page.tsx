@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMoviesByGenre, showMoreMovies } from '../../store/action';
+import { LoadingScreen } from '../../pages/loading/loading';
+import { AppDispatch } from '../../store';
+import { fetchMoviesByGenre, setFilteredFilms, showMoreMovies } from '../../store/action';
+import { fetchMoviesList } from '../../store/api-actions';
 import { RootState } from '../../store/state';
 import { Footer, Genres, PromoFilm } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
 import ShowMoreButton from '../show-more-button/show-more-button';
-
 
 type MainPageProps = {
   promoFilmTitle: string;
@@ -14,17 +16,34 @@ type MainPageProps = {
 }
 
 function MainPage(props: MainPageProps) {
-  const dispatch = useDispatch();
-  const { genre, movies, displayedMoviesCount } = useSelector((state: RootState) => state.movies);
+  const dispatch = useDispatch<AppDispatch>();
+  const { genre, filteredFilms: movies, allFilms, displayedMoviesCount, loading } = useSelector((state: RootState) => state.movies);
+
+  useEffect(() => {
+    dispatch(fetchMoviesList());
+  }, [dispatch]);
 
   const handleShowMoreClick = () => {
     dispatch(showMoreMovies());
   };
 
   useEffect(() => {
-    dispatch(fetchMoviesByGenre(genre));
-  }, [genre, dispatch]);
+    if (movies.length > 0) {
+      dispatch(fetchMoviesByGenre(genre));
+    }
+  }, [genre, dispatch, movies.length]);
 
+  useEffect(() => {
+    if (genre === 'All genres') {
+      dispatch(setFilteredFilms(allFilms));
+    } else {
+      dispatch(setFilteredFilms(allFilms.filter((movie) => movie.genre === genre)));
+    }
+  }, [genre, allFilms, dispatch]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

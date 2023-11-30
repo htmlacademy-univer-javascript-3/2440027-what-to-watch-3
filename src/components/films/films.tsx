@@ -1,26 +1,24 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Footer } from '../main-page-utils/utils';
-import { BaseFilm } from '../../mocks/films';
-import Tabs from '../tabs/tabs';
+// import { BaseFilm } from '../../mocks/films';
+// import Tabs from '../tabs/tabs';
 import MoviesList from '../movie-list/movie-list';
+import { FilmShortDescription } from '../../types/film';
 
 
-function getSimilarMovies(films: BaseFilm[], currentFilm: BaseFilm, count = 4) {
-  // Разбиваем строку жанров текущего фильма на массив жанров
+function getSimilarMovies(films: FilmShortDescription[], currentFilm: FilmShortDescription, count = 4) {
   const currentGenres = currentFilm.genre.split(', ');
-
+  // TODO DEPRECATED
   return films.filter((f) => {
-    // Для каждого фильма также разбиваем строку жанров на массив
     const filmGenres = f.genre.split(', ');
 
-    // Проверяем, есть ли совпадение хотя бы одного жанра с жанрами текущего фильма
     return filmGenres.some((genre) => currentGenres.includes(genre)) && f.id !== currentFilm.id;
   }).slice(0, count);
 }
 
 
-function Film({ films: films }: { films: BaseFilm[]}) {
+function Film({ films: films }: { films: FilmShortDescription[]}) {
   const { id } = useParams();
   const film = films.find((f: { id: string | undefined }) => f.id === id);
 
@@ -34,7 +32,7 @@ function Film({ films: films }: { films: BaseFilm[]}) {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.imageSrc} alt={film.title} />
+            <img src={film.previewImage} alt={film.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -62,10 +60,10 @@ function Film({ films: films }: { films: BaseFilm[]}) {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{film.title}</h2>
+              <h2 className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{film.genre}</span>
-                <span className="film-card__year">{film.releaseDate}</span>
+                <span className="film-card__year">{123}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -95,11 +93,11 @@ function Film({ films: films }: { films: BaseFilm[]}) {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={film.imageSrc} alt={film.title} width="218" height="327" />
+              <img src={film.previewImage} alt={film.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <Tabs film={film} />
+              {/* <Tabs film={film} /> */}
             </div>
           </div>
         </div>

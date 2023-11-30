@@ -7,7 +7,7 @@ export function Genres() {
   const dispatch = useDispatch();
   const movies = useSelector((state: RootState) => state.movies);
 
-  const uniqueGenres = ['All genres', ...new Set(movies.movies.map((film) => film.genre))];
+  const uniqueGenres = ['All genres', ...new Set(movies.allFilms.map((film) => film.genre))];
 
   const onGenreClick = (genre: string) => {
     dispatch(changeGenre(genre));
@@ -122,7 +122,7 @@ export function Footer() {
       </div>
 
       <div className="copyright">
-        <p>© 2019 What to watch Ltd.</p>
+        <p>© 2023 What to watch Ltd.</p>
       </div>
     </footer>
   );

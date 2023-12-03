@@ -1,7 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, fetchMoviesByGenre, showMoreMovies , setFilteredFilms} from './action';
-import { fetchMoviesList } from './api-actions';
+import { changeGenre, fetchMoviesByGenre, showMoreMovies , setFilteredFilms, setAuthorizationStatus} from './action';
+import { fetchMoviesList, login, checkAuth, logout } from './api-actions';
 import { FilmShortDescription } from '../types/film';
+import { AuthorizationStatus } from '../types/authorization-status';
+import { AuthResponse } from '../types/auth';
 
 export const MOVIES_BATCH = 8;
 
@@ -12,6 +14,8 @@ export interface MoviesState {
     displayedMoviesCount: number;
     loading: boolean;
     error: string | null;
+    authorizationStatus: AuthorizationStatus;
+    userInfo: AuthResponse | null;
 }
 
 export const InitialState: MoviesState = {
@@ -21,6 +25,8 @@ export const InitialState: MoviesState = {
   displayedMoviesCount: MOVIES_BATCH,
   loading: false,
   error: null,
+  authorizationStatus: AuthorizationStatus.NotAuthenticated,
+  userInfo: null,
 };
 
 export const moviesReducer = createReducer(InitialState, (builder) => {
@@ -30,7 +36,6 @@ export const moviesReducer = createReducer(InitialState, (builder) => {
       state.displayedMoviesCount = MOVIES_BATCH;
     })
     .addCase(fetchMoviesByGenre, (state) => {
-      // state.loading = true;
       state.error = null;
       if (state.genre === 'All genres') {
         state.filteredFilms = state.allFilms;
@@ -56,6 +61,36 @@ export const moviesReducer = createReducer(InitialState, (builder) => {
     })
     .addCase(setFilteredFilms, (state, action) => {
       state.filteredFilms = action.payload;
+    })
+    .addCase(setAuthorizationStatus, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(login.pending, (state) => {
+      state.authorizationStatus = AuthorizationStatus.Pending;
+    })
+    .addCase(login.fulfilled, (state, action) => {
+      state.authorizationStatus = AuthorizationStatus.Authenticated;
+      state.userInfo = action.payload;
+    })
+    .addCase(login.rejected, (state) => {
+      state.authorizationStatus = AuthorizationStatus.NotAuthenticated;
+    })
+    .addCase(checkAuth.fulfilled, (state, action) => {
+      if (action.payload.authorized && action.payload.data) {
+        state.authorizationStatus = AuthorizationStatus.Authenticated;
+        state.userInfo = action.payload.data;
+      } else {
+        state.authorizationStatus = AuthorizationStatus.NotAuthenticated;
+        state.userInfo = null;
+      }
+    })
+    .addCase(checkAuth.rejected, (state) => {
+      state.authorizationStatus = AuthorizationStatus.NotAuthenticated;
+      state.userInfo = null;
+    })
+    .addCase(logout.fulfilled, (state) => {
+      state.authorizationStatus = AuthorizationStatus.NotAuthenticated;
+      state.userInfo = null;
     });
 });
 

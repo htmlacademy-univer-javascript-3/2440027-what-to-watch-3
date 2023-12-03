@@ -53,7 +53,6 @@ function MainPage(props: MainPageProps) {
         releaseDate={props.promoFilmReleaseDate}
         bgImageSrc="/img/bg-the-grand-budapest-hotel.jpg"
         posterImageSrc="/img/the-grand-budapest-hotel-poster.jpg"
-        userAvatarSrc="/img/avatar.jpg"
       />
 
       <div className="page-content">

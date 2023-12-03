@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/state';
+import { AuthorizationStatus } from '../../types/authorization-status';
 
 
 function NotFoundPage() {
@@ -22,7 +25,8 @@ type ProtectedWrapperProps = {
 
 export const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
   const navigate = useNavigate();
-  const isAuthorized = true; // TODO вернуть false
+  const authorizationStatus = useSelector((state: RootState) => state.movies.authorizationStatus);
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Authenticated;
 
   useEffect(() => {
     if (!isAuthorized) {

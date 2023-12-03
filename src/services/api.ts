@@ -10,6 +10,17 @@ const getAPIClient = () => {
     timeout: REQUEST_TIMEOUT_MS,
   });
 
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (error.response?.status === 401) {
+        // what to do if 401
+      }
+      return Promise.reject(error);
+    }
+  );
+
   return api;
 };
 

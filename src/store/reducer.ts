@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, fetchMoviesByGenre, showMoreMovies , setFilteredFilms, setAuthorizationStatus} from './action';
-import { fetchMoviesList, login, checkAuth, logout } from './api-actions';
-import { FilmShortDescription } from '../types/film';
-import { AuthorizationStatus } from '../types/authorization-status';
 import { AuthResponse } from '../types/auth';
+import { AuthorizationStatus } from '../types/authorization-status';
+import { FilmFullDescription, FilmShortDescription } from '../types/film';
+import { changeGenre, fetchMoviesByGenre, setAuthorizationStatus, setFilteredFilms, showMoreMovies } from './action';
+import { checkAuth, fetchFilmDetails, fetchMoviesList, login, logout } from './api-actions';
 
 export const MOVIES_BATCH = 8;
 
@@ -16,6 +16,7 @@ export interface MoviesState {
     error: string | null;
     authorizationStatus: AuthorizationStatus;
     userInfo: AuthResponse | null;
+    currentFilm: FilmFullDescription | null;
 }
 
 export const InitialState: MoviesState = {
@@ -27,6 +28,7 @@ export const InitialState: MoviesState = {
   error: null,
   authorizationStatus: AuthorizationStatus.NotAuthenticated,
   userInfo: null,
+  currentFilm: null,
 };
 
 export const moviesReducer = createReducer(InitialState, (builder) => {
@@ -91,6 +93,18 @@ export const moviesReducer = createReducer(InitialState, (builder) => {
     .addCase(logout.fulfilled, (state) => {
       state.authorizationStatus = AuthorizationStatus.NotAuthenticated;
       state.userInfo = null;
+    })
+    .addCase(fetchFilmDetails.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(fetchFilmDetails.fulfilled, (state, action) => {
+      state.loading = false;
+      state.currentFilm = action.payload;
+    })
+    .addCase(fetchFilmDetails.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed loading movie details';
     });
 });
 

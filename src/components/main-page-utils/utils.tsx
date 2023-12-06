@@ -32,7 +32,7 @@ export function Genres() {
 }
 
 
-export function Header() {
+export function Header({ children }: { children?: React.ReactNode }) {
   const { authorizationStatus, userInfo } = useSelector((state: RootState) => state.movies);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -52,6 +52,8 @@ export function Header() {
             <span className="logo__letter logo__letter--3">W</span>
           </a>
         </div>
+
+        {children}
 
         <ul className="user-block">
           <li className="user-block__item">

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import OverviewTab from './overview-tab';
-import { BaseFilm } from '../../mocks/films';
+import { FilmFullDescription } from '../../types/film';
 import DetailsTab from './details-tab';
+import OverviewTab from './overview-tab';
 import ReviewsTab from './reviews-tab';
 
 
-function Tabs({ film }: { film: BaseFilm }) {
+function Tabs({ film }: { film: FilmFullDescription }) {
   const [activeTab, setActiveTab] = useState('overview');
 
   const handleTabClick = (tabName: string, event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -31,7 +31,7 @@ function Tabs({ film }: { film: BaseFilm }) {
 
       {activeTab === 'overview' && <OverviewTab film={film} />}
       {activeTab === 'details' && <DetailsTab film={film} />}
-      {activeTab === 'reviews' && <ReviewsTab film={film} />}
+      {activeTab === 'reviews' && <ReviewsTab />}
     </div>
   );
 }

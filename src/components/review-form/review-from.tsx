@@ -1,14 +1,28 @@
-
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppDispatch } from '../../store';
+import { postComment } from '../../store/api-actions';
+
 
 const ReviewForm: React.FC = () => {
   const [rating, setRating] = useState(8);
   const [reviewText, setReviewText] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
+  const { id } = useParams();
+  const isReviewValid = reviewText.length > 50 && reviewText.length < 400;
+  const navigate = useNavigate();
 
-  // just for now
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // console.log({ rating, reviewText });
+
+    if (id && isReviewValid) {
+      dispatch(postComment({ filmId: id, comment: reviewText, rating }))
+        .unwrap()
+        .then(() => {
+          navigate(`/films/${id}`);
+        });
+    }
   };
 
   return (
@@ -43,7 +57,7 @@ const ReviewForm: React.FC = () => {
         >
         </textarea>
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">Post</button>
+          <button className="add-review__btn" type="submit" disabled={!isReviewValid}>Post</button>
         </div>
       </div>
     </form>

@@ -1,14 +1,14 @@
-import { BaseFilm } from '../../mocks/films';
+import { FilmFullDescription } from '../../types/film';
 
-function OverviewTab({ film }: { film: BaseFilm}) {
+function OverviewTab({ film }: { film: FilmFullDescription}) {
 
   return (
     <div>
       <div className="film-rating">
         <div className="film-rating__score">{film.rating}</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">{film.ratingLevel}</span>
-          <span className="film-rating__count">{film.ratingCount} ratings</span>
+          <span className="film-rating__level">{film.rating}</span>
+          <span className="film-rating__count">{film.scoresCount} ratings</span>
         </p>
       </div>
 

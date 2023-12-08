@@ -1,6 +1,6 @@
-import { BaseFilm } from '../../mocks/films';
+import { FilmFullDescription } from '../../types/film';
 
-function DetailsTab({ film: film }: { film: BaseFilm }) {
+function DetailsTab({ film: film }: { film: FilmFullDescription }) {
 
   const formatRunTime = (runtime: number) => {
     const hours = Math.floor(runtime / 60);
@@ -34,7 +34,7 @@ function DetailsTab({ film: film }: { film: BaseFilm }) {
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Released</strong>
-          <span className="film-card__details-value">{film.releaseDate}</span>
+          <span className="film-card__details-value">{film.released}</span>
         </p>
       </div>
     </div>

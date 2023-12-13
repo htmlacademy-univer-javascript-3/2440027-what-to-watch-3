@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { FilmFullDescription } from '../../types/film';
 import DetailsTab from './details-tab';
 import OverviewTab from './overview-tab';
@@ -8,10 +8,10 @@ import ReviewsTab from './reviews-tab';
 function Tabs({ film }: { film: FilmFullDescription }) {
   const [activeTab, setActiveTab] = useState('overview');
 
-  const handleTabClick = (tabName: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleTabClick = useCallback((tabName: string, event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setActiveTab(tabName);
-  };
+  }, []);
 
   return (
     <div>

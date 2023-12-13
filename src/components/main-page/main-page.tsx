@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback, memo} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoadingScreen } from '../../pages/loading/loading';
 import { AppDispatch } from '../../store';
 import { fetchMoviesByGenre, setFilteredFilms, showMoreMovies } from '../../store/action';
 import { fetchMoviesList } from '../../store/api-actions';
-import { RootState } from '../../store/state';
+import { RootState } from '../../store/root-reducer';
 import { Footer, Genres, PromoFilm } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
 import ShowMoreButton from '../show-more-button/show-more-button';
@@ -15,17 +15,20 @@ type MainPageProps = {
   promoFilmReleaseDate: string;
 }
 
+const ShowMoreButtonMemo = memo(ShowMoreButton);
+
 function MainPage(props: MainPageProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const { genre, filteredFilms: movies, allFilms, displayedMoviesCount, loading } = useSelector((state: RootState) => state.movies);
+  const { genre, filteredFilms: movies, allFilms, displayedMoviesCount } = useSelector((state: RootState) => state.movies);
+  const { loading } = useSelector((state: RootState) => state.ui);
 
   useEffect(() => {
     dispatch(fetchMoviesList());
   }, [dispatch]);
 
-  const handleShowMoreClick = () => {
+  const handleShowMoreClick = useCallback(() => {
     dispatch(showMoreMovies());
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     if (movies.length > 0) {
@@ -63,7 +66,7 @@ function MainPage(props: MainPageProps) {
 
           <MoviesList movies={movies.slice(0, displayedMoviesCount)} />
 
-          <ShowMoreButton
+          <ShowMoreButtonMemo
             onClick={handleShowMoreClick}
             isVisible={displayedMoviesCount < movies.length}
           />

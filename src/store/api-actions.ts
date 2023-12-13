@@ -3,41 +3,27 @@ import { AxiosInstance } from 'axios';
 import { AuthResponse, CheckAuthResponse } from '../types/auth';
 import { FilmFullDescription, FilmShortDescription } from '../types/film';
 import { Review } from '../types/review';
-import { RootState } from './state';
-
+import { RootState } from './root-reducer';
 
 export const fetchMoviesList = createAsyncThunk<FilmShortDescription[], void, { state: RootState; extra: AxiosInstance }>(
   'movies/fetchMoviesList',
   async (_, { extra: api }) => {
-    // await new Promise((resolve) => setTimeout(resolve, 1500));
     const response = await api.get<FilmShortDescription[]>('/films');
     return response.data;
   }
 );
 
-
-export const checkAuth = createAsyncThunk<CheckAuthResponse, void, { state: RootState; extra: AxiosInstance } >(
+export const checkAuth = createAsyncThunk<CheckAuthResponse, void, { state: RootState; extra: AxiosInstance }>(
   'auth/checkAuth',
   async (_, { extra: api }) => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      return { authorized: false };
-    }
-
     try {
-      const response = await api.get<AuthResponse>('/login', {
-        headers: {
-          'X-Token': token,
-        }
-      });
+      const response = await api.get<AuthResponse>('/login');
       return { authorized: true, data: response.data };
     } catch (error) {
       return { authorized: false };
     }
   }
 );
-
 
 export const login = createAsyncThunk<AuthResponse, { email: string; password: string }, { state: RootState; extra: AxiosInstance }>(
   'auth/login',
@@ -50,14 +36,9 @@ export const login = createAsyncThunk<AuthResponse, { email: string; password: s
 
 export const logout = createAsyncThunk<void, void, { state: RootState; extra: AxiosInstance }>(
   'auth/logout',
-  async (_, { extra: api, getState }) => {
-    const token = getState().movies.userInfo?.token;
-    if (token) {
-      await api.delete('/logout', {
-        headers: { 'X-Token': token }
-      });
-      localStorage.removeItem('token');
-    }
+  async (_, { extra: api }) => {
+    await api.delete('/logout');
+    localStorage.removeItem('token');
   }
 );
 
@@ -87,20 +68,8 @@ export const fetchFilmComments = createAsyncThunk<Review[], string, { state: Roo
 
 export const postComment = createAsyncThunk<Review, { filmId: string; comment: string; rating: number }, { state: RootState; extra: AxiosInstance }>(
   'movies/postComment',
-  async ({ filmId, comment, rating }, { extra: api, getState }) => {
-    const token = getState().movies.userInfo?.token;
-
-    if (!token) {
-      throw new Error('User is not authenticated');
-    }
-
-    const response = await api.post<Review>(`/comments/${filmId}`, { comment, rating }, {
-      headers: {
-        'X-Token': token
-      }
-    });
-
+  async ({ filmId, comment, rating }, { extra: api }) => {
+    const response = await api.post<Review>(`/comments/${filmId}`, { comment, rating });
     return response.data;
   }
 );
-

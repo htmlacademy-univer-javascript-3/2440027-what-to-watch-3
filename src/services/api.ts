@@ -15,11 +15,19 @@ const getAPIClient = () => {
     (error) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (error.response?.status === 401) {
-        // what to do if 401
+        // TODO add error page here
       }
       return Promise.reject(error);
     }
   );
+
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token && config.headers) {
+      config.headers['X-Token'] = token;
+    }
+    return config;
+  });
 
   return api;
 };

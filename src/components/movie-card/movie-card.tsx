@@ -1,22 +1,18 @@
-/* eslint-disable react/no-unused-prop-types */
-import React from 'react';
+/* eslint-disable react/display-name */
 import { Link } from 'react-router-dom';
 import VideoPlayer from '../utils/video-player';
 import useDelayedHover from '../../hooks/use-delayed-hover';
+import { memo } from 'react';
 
 type MovieCardProps = {
   id: string;
   title: string;
   imageSrc: string;
-  description?: string;
-  releaseDate?: string;
-  genre?: string;
   trailerSrc: string;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({ id, title, imageSrc, trailerSrc }) => {
+
+const MovieCard = memo(({ id, title, imageSrc, trailerSrc }: MovieCardProps) => {
   const { isPlaying, onMouseEnter, onMouseLeave } = useDelayedHover(1000);
 
   return (
@@ -39,7 +35,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ id, title, imageSrc, trailerSrc }
       </h3>
     </article>
   );
-};
+});
 
 export default MovieCard;
 

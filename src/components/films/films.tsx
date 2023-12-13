@@ -4,22 +4,22 @@ import { Link, useParams } from 'react-router-dom';
 import { LoadingScreen } from '../../pages/loading/loading';
 import { AppDispatch } from '../../store';
 import { fetchFilmDetails, fetchSimilarMovies } from '../../store/api-actions';
-import { RootState } from '../../store/state';
+import { RootState } from '../../store/root-reducer';
 import { FilmShortDescription } from '../../types/film';
 import { Footer, Header } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
 import Tabs from '../tabs/tabs';
 import NotFoundPage from '../utils/utils';
 import { AuthorizationStatus } from '../../types/authorization-status';
+import ErrorPage from '../error-page/error-page';
 
 
 function Film() {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const film = useSelector((state: RootState) => state.movies.currentFilm);
-  const loading = useSelector((state: RootState) => state.movies.loading);
-  const error = useSelector((state: RootState) => state.movies.error);
-  const authorizationStatus = useSelector((state: RootState) => state.movies.authorizationStatus);
+  const { authorizationStatus } = useSelector((state: RootState) => state.auth);
+  const { loading, error } = useSelector((state: RootState) => state.ui);
   const [similarMovies, setSimilarMovies] = useState<FilmShortDescription[]>([]);
 
 
@@ -29,8 +29,7 @@ function Film() {
       .unwrap()
       .then((data) => {
         setSimilarMovies(data);
-      })
-      .catch((err) => <div>Something went wrong: {err}</div>);
+      });
   }, [dispatch, id]);
 
   if (loading) {
@@ -38,7 +37,7 @@ function Film() {
   }
 
   if (error) {
-    return <div>Something went wrong: {error}</div>;
+    return <ErrorPage message={error}/>;
   }
 
   if (!film) {

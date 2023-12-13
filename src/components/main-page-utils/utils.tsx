@@ -1,21 +1,22 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { changeGenre } from '../../store/action';
-import { RootState } from '../../store/state';
+import { RootState } from '../../store/root-reducer';
 import { AuthorizationStatus } from '../../types/authorization-status';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/api-actions';
 import { AppDispatch } from '../../store';
+import { useCallback, useMemo } from 'react';
 
 export function Genres() {
-  const dispatch = useDispatch();
-  const movies = useSelector((state: RootState) => state.movies);
+  const dispatch = useDispatch<AppDispatch>();
+  const allFilms = useSelector((state: RootState) => state.movies.allFilms);
 
-  const uniqueGenres = ['All genres', ...new Set(movies.allFilms.map((film) => film.genre))];
+  const uniqueGenres = useMemo(() => ['All genres', ...new Set(allFilms.map((film) => film.genre))], [allFilms]);
 
-  const onGenreClick = (genre: string) => {
+  const onGenreClick = useCallback((genre: string) => {
     dispatch(changeGenre(genre));
-  };
+  }, [dispatch]);
 
   return (
     <ul className="catalog__genres-list">
@@ -33,12 +34,13 @@ export function Genres() {
 
 
 export function Header({ children }: { children?: React.ReactNode }) {
-  const { authorizationStatus, userInfo } = useSelector((state: RootState) => state.movies);
+  const { authorizationStatus, userInfo } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
     dispatch(logout())
+      .unwrap()
       .then(() => navigate('/'));
   };
 

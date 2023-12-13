@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../store/api-actions';
-import { RootState } from '../../store/state';
+import { RootState } from '../../store/root-reducer';
 import { AppDispatch } from '../../store';
 import { AuthorizationStatus } from '../../types/authorization-status';
 import { Footer } from '../main-page-utils/utils';
@@ -15,7 +15,8 @@ function SignIn() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const {authorizationStatus, error } = useSelector((state: RootState) => state.movies);
+  const {authorizationStatus } = useSelector((state: RootState) => state.auth);
+  const { error } = useSelector((state: RootState) => state.ui);
   const [isLoginAttempted, setIsLoginAttempted] = useState(false);
 
 
@@ -31,6 +32,7 @@ function SignIn() {
     e.preventDefault();
     setIsLoginAttempted(true);
     dispatch(login({ email, password }))
+      .unwrap()
       .then(() => {
         if (authorizationStatus === AuthorizationStatus.Authenticated) {
           navigate('/');

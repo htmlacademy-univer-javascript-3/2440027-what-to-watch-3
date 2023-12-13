@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import ReviewForm from '../review-form/review-from';
-import { RootState } from '../../store/state';
+import { RootState } from '../../store/root-reducer';
 import { Header } from '../main-page-utils/utils';
 
 function AddReview() {

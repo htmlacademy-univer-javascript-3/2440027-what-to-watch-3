@@ -4,28 +4,21 @@ import App from './components/app/app';
 import { Provider } from 'react-redux';
 import store from './store/';
 import { checkAuth } from './store/api-actions';
+import { fetchPromoFilm } from './store/api-actions';
 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const promoData = {
-  promoTitle: 'The Grand Budapest Hotel',
-  promoGenre: 'Drama',
-  promoReleaseDate: '2014',
-};
 
 store.dispatch(checkAuth());
+store.dispatch(fetchPromoFilm());
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App
-        promoTitle={promoData.promoTitle}
-        promoGenre={promoData.promoGenre}
-        promoReleaseDate={promoData.promoReleaseDate}
-      />
+      <App />
     </Provider>
   </React.StrictMode>
 );

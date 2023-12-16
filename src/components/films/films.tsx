@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -5,13 +6,14 @@ import { LoadingScreen } from '../../pages/loading/loading';
 import { AppDispatch } from '../../store';
 import { fetchFilmDetails, fetchSimilarMovies } from '../../store/api-actions';
 import { RootState } from '../../store/root-reducer';
+import { AuthorizationStatus } from '../../types/authorization-status';
 import { FilmShortDescription } from '../../types/film';
+import ErrorPage from '../error-page/error-page';
 import { Footer, Header } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
 import Tabs from '../tabs/tabs';
 import NotFoundPage from '../utils/utils';
-import { AuthorizationStatus } from '../../types/authorization-status';
-import ErrorPage from '../error-page/error-page';
+import MyListButton from '../my-list/my-list-button';
 
 
 function Film() {
@@ -22,6 +24,7 @@ function Film() {
   const { loading, error } = useSelector((state: RootState) => state.ui);
   const [similarMovies, setSimilarMovies] = useState<FilmShortDescription[]>([]);
 
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Authenticated;
 
   useEffect(() => {
     dispatch(fetchFilmDetails(id as string));
@@ -37,7 +40,7 @@ function Film() {
   }
 
   if (error) {
-    return <ErrorPage message={error}/>;
+    return <ErrorPage message={error} />;
   }
 
   if (!film) {
@@ -71,16 +74,9 @@ function Film() {
                   </svg>
                   <span>Play</span>
                 </Link>
+                {isAuthorized && <MyListButton filmId={film.id} isFavorite={film.isFavorite!} />}
 
-                {/* <Link to={'/mylist'} className="btn btn--play film-card__button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </Link> */}
-
-                <Link to={`/films/${film.id}/review`} className="btn film-card__button" style={{ display: authorizationStatus === AuthorizationStatus.Authenticated ? 'block' : 'none' }}>
+                <Link to={`/films/${film.id}/review`} className="btn film-card__button" style={{ display: isAuthorized ? 'block' : 'none' }}>
                   Add review
                 </Link>
               </div>
@@ -107,9 +103,7 @@ function Film() {
           <MoviesList movies={similarMovies}></MoviesList>
 
         </section>
-
-        <Footer/>
-
+        <Footer />
       </div>
     </React.Fragment>
   );

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { fetchMoviesList, fetchFilmDetails } from './api-actions';
+import { fetchMoviesList, fetchFilmDetails, fetchPromoFilm } from './api-actions';
 
 interface UIState {
   loading: boolean;
@@ -34,5 +34,16 @@ export const uiReducer = createReducer(initialUIState, (builder) => {
     .addCase(fetchFilmDetails.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed loading movie details';
+    })
+    .addCase(fetchPromoFilm.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(fetchPromoFilm.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(fetchPromoFilm.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed loading promo movie';
     });
 });

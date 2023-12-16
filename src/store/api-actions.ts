@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AuthResponse, CheckAuthResponse } from '../types/auth';
-import { FilmFullDescription, FilmShortDescription } from '../types/film';
+import { FilmFullDescription, FilmShortDescription, PromoFilmDescription } from '../types/film';
 import { Review } from '../types/review';
 import { RootState } from './root-reducer';
 
@@ -70,6 +70,30 @@ export const postComment = createAsyncThunk<Review, { filmId: string; comment: s
   'movies/postComment',
   async ({ filmId, comment, rating }, { extra: api }) => {
     const response = await api.post<Review>(`/comments/${filmId}`, { comment, rating });
+    return response.data;
+  }
+);
+
+export const fetchPromoFilm = createAsyncThunk<PromoFilmDescription, void, { state: RootState; extra: AxiosInstance }>(
+  'movies/fetchPromoFilm',
+  async (_, { extra: api }) => {
+    const response = await api.get<PromoFilmDescription>('/promo');
+    return response.data;
+  }
+);
+
+export const postFavoriteStatus = createAsyncThunk<FilmFullDescription, { filmId: string; status: number }, { state: RootState; extra: AxiosInstance }>(
+  'movies/postFavoriteStatus',
+  async ({ filmId, status }, { extra: api }) => {
+    const response = await api.post<FilmFullDescription>(`/favorite/${filmId}/${status}`);
+    return response.data;
+  }
+);
+
+export const fetchFavoriteMovies = createAsyncThunk<FilmShortDescription[], void, { state: RootState; extra: AxiosInstance }>(
+  'movies/fetchFavoriteMovies',
+  async (_, { extra: api }) => {
+    const response = await api.get<FilmShortDescription[]>('/favorite');
     return response.data;
   }
 );

@@ -1,12 +1,14 @@
-import { useSelector, useDispatch } from 'react-redux';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppDispatch } from '../../store';
 import { changeGenre } from '../../store/action';
+import { logout } from '../../store/api-actions';
 import { RootState } from '../../store/root-reducer';
 import { AuthorizationStatus } from '../../types/authorization-status';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { logout } from '../../store/api-actions';
-import { AppDispatch } from '../../store';
-import { useCallback, useMemo } from 'react';
+import MyListButton from '../my-list/my-list-button';
+
 
 export function Genres() {
   const dispatch = useDispatch<AppDispatch>();
@@ -90,19 +92,15 @@ export function Header({ children }: { children?: React.ReactNode }) {
   }
 }
 
-type PromoFilmProps = {
-  title: string;
-  genre: string;
-  releaseDate: string;
-  bgImageSrc: string;
-  posterImageSrc: string;
-};
 
-export function PromoFilm(props: PromoFilmProps) {
+export function PromoFilm() {
+  const promoFilm = useSelector((state: RootState) => state.movies.promoFilm);
+  const isAuthorized = useSelector((state: RootState) => state.auth.authorizationStatus === AuthorizationStatus.Authenticated);
+
   return (
     <section className="film-card">
       <div className="film-card__bg">
-        <img src={props.bgImageSrc} alt={props.title} />
+        <img src={promoFilm?.backgroundImage} alt={promoFilm?.name} />
       </div>
 
       <h1 className="visually-hidden">WTW</h1>
@@ -111,29 +109,23 @@ export function PromoFilm(props: PromoFilmProps) {
       <div className="film-card__wrap">
         <div className="film-card__info">
           <div className="film-card__poster">
-            <img src={props.posterImageSrc} alt={`${props.title} poster`} width="218" height="327" />
+            <img src={promoFilm?.posterImage} alt={`${promoFilm!.name} poster`} width="218" height="327" />
           </div>
 
           <div className="film-card__desc">
-            <h2 className="film-card__title">{props.title}</h2>
+            <h2 className="film-card__title">{promoFilm?.name}</h2>
             <p className="film-card__meta">
-              <span className="film-card__genre">{props.genre}</span>
-              <span className="film-card__year">{props.releaseDate}</span>
+              <span className="film-card__genre">{promoFilm?.genre}</span>
+              <span className="film-card__year">{promoFilm?.released}</span>
             </p>
             <div className="film-card__buttons">
-              <button className="btn btn--play film-card__button" type="button">
+              <Link to={`/player/${promoFilm!.id}`} className="btn btn--play film-card__button">
                 <svg viewBox="0 0 19 19" width="19" height="19">
                   <use xlinkHref="#play-s"></use>
                 </svg>
                 <span>Play</span>
-              </button>
-              <button className="btn btn--list film-card__button" type="button">
-                <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
-                </svg>
-                <span>My list</span>
-                <span className="film-card__count">9</span>
-              </button>
+              </Link>
+              {isAuthorized && <MyListButton filmId={promoFilm!.id} isFavorite={promoFilm!.isFavorite} />}
             </div>
           </div>
         </div>

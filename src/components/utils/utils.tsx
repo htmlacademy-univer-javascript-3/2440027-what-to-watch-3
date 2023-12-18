@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/root-reducer';
-import { AuthorizationStatus } from '../../types/authorization-status';
-
 
 function NotFoundPage() {
   return (
@@ -25,8 +21,8 @@ type ProtectedWrapperProps = {
 
 export const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
   const navigate = useNavigate();
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
-  const isAuthorized = authorizationStatus === AuthorizationStatus.Authenticated;
+  const token = localStorage.getItem('token');
+  const isAuthorized = token !== null;
 
   useEffect(() => {
     if (!isAuthorized) {

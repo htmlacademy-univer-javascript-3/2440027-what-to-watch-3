@@ -23,3 +23,14 @@ export type FilmFullDescription = {
     released: number;
     isFavorite?: boolean;
 }
+
+export type PromoFilmDescription = {
+    id: string;
+    name: string;
+    posterImage: string;
+    backgroundImage: string;
+    videoLink: string;
+    genre: string;
+    released: number;
+    isFavorite: boolean;
+}

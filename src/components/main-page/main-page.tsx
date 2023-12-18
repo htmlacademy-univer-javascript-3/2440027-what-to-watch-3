@@ -9,15 +9,10 @@ import { Footer, Genres, PromoFilm } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
 import ShowMoreButton from '../show-more-button/show-more-button';
 
-type MainPageProps = {
-  promoFilmTitle: string;
-  promoFilmGenre: string;
-  promoFilmReleaseDate: string;
-}
 
 const ShowMoreButtonMemo = memo(ShowMoreButton);
 
-function MainPage(props: MainPageProps) {
+function MainPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { genre, filteredFilms: movies, allFilms, displayedMoviesCount } = useSelector((state: RootState) => state.movies);
   const { loading } = useSelector((state: RootState) => state.ui);
@@ -50,13 +45,7 @@ function MainPage(props: MainPageProps) {
 
   return (
     <div>
-      <PromoFilm
-        title={props.promoFilmTitle}
-        genre={props.promoFilmGenre}
-        releaseDate={props.promoFilmReleaseDate}
-        bgImageSrc="/img/bg-the-grand-budapest-hotel.jpg"
-        posterImageSrc="/img/the-grand-budapest-hotel-poster.jpg"
-      />
+      <PromoFilm />
 
       <div className="page-content">
         <section className="catalog">

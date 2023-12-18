@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { FilmShortDescription, FilmFullDescription } from '../types/film';
+import { FilmShortDescription, FilmFullDescription, PromoFilmDescription } from '../types/film';
 import { changeGenre, fetchMoviesByGenre, setFilteredFilms, showMoreMovies } from './action';
-import { fetchMoviesList, fetchFilmDetails } from './api-actions';
+import { fetchMoviesList, fetchFilmDetails, fetchPromoFilm, fetchFavoriteMovies } from './api-actions';
 
 export const MOVIES_BATCH = 8;
 
@@ -11,6 +11,8 @@ interface MoviesState {
   filteredFilms: FilmShortDescription[];
   displayedMoviesCount: number;
   currentFilm: FilmFullDescription | null;
+  promoFilm: PromoFilmDescription | null;
+  favoriteFilms: FilmShortDescription[];
 }
 
 const initialMoviesState: MoviesState = {
@@ -19,6 +21,8 @@ const initialMoviesState: MoviesState = {
   filteredFilms: [],
   displayedMoviesCount: MOVIES_BATCH,
   currentFilm: null,
+  promoFilm: null,
+  favoriteFilms: [],
 };
 
 export const moviesReducer = createReducer(initialMoviesState, (builder) => {
@@ -46,5 +50,11 @@ export const moviesReducer = createReducer(initialMoviesState, (builder) => {
     })
     .addCase(fetchFilmDetails.fulfilled, (state, action) => {
       state.currentFilm = action.payload;
+    })
+    .addCase(fetchPromoFilm.fulfilled, (state, action) => {
+      state.promoFilm = action.payload;
+    })
+    .addCase(fetchFavoriteMovies.fulfilled, (state, action) => {
+      state.favoriteFilms = action.payload;
     });
 });

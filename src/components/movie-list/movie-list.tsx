@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
-import MovieCard from '../movie-card/movie-card';
-import { FilmShortDescription } from '../../types/film';
 import { memo } from 'react';
+import { FilmShortDescription } from '../../types/film';
+import MovieCard from '../movie-card/movie-card';
 
 type MoviesListProps = {
   movies: FilmShortDescription[];

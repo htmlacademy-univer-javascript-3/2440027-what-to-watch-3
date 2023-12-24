@@ -4,6 +4,8 @@ import { AuthResponse, CheckAuthResponse } from '../types/auth';
 import { FilmFullDescription, FilmShortDescription, PromoFilmDescription } from '../types/film';
 import { Review } from '../types/review';
 import { RootState } from './root-reducer';
+import { ValidationErrorResponse } from '../types/validation-error';
+import { AxiosError } from 'axios';
 
 export const fetchMoviesList = createAsyncThunk<FilmShortDescription[], void, { state: RootState; extra: AxiosInstance }>(
   'movies/fetchMoviesList',
@@ -27,12 +29,22 @@ export const checkAuth = createAsyncThunk<CheckAuthResponse, void, { state: Root
 
 export const login = createAsyncThunk<AuthResponse, { email: string; password: string }, { state: RootState; extra: AxiosInstance }>(
   'auth/login',
-  async ({ email, password }, { extra: api }) => {
-    const response = await api.post<AuthResponse>('/login', { email, password });
-    localStorage.setItem('token', response.data.token);
-    return response.data;
+  async ({ email, password }, { extra: api, rejectWithValue }) => {
+    try {
+      const response = await api.post<AuthResponse>('/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<ValidationErrorResponse>;
+      if (axiosError.response && axiosError.response.data) {
+        return rejectWithValue(axiosError.response.data);
+      } else {
+        return rejectWithValue('An unexpected error occurred');
+      }
+    }
   }
 );
+
 
 export const logout = createAsyncThunk<void, void, { state: RootState; extra: AxiosInstance }>(
   'auth/logout',

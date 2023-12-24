@@ -1,4 +1,4 @@
-import { useEffect, useCallback, memo} from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoadingScreen } from '../../pages/loading/loading';
 import { AppDispatch } from '../../store';

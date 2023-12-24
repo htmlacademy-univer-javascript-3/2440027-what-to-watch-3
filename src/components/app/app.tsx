@@ -1,13 +1,11 @@
-/* eslint-disable react/no-unused-prop-types */
-import MainPage from '../main-page/main-page.tsx';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NotFoundPage from '../utils/utils.tsx';
-import SignIn from '../login/sign-in.tsx';
-import MyList from '../my-list/my-list.tsx';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Film from '../films/films.tsx';
-import AddReview from '../review/add-review.tsx';
+import SignIn from '../login/sign-in.tsx';
+import MainPage from '../main-page/main-page.tsx';
+import MyList from '../my-list/my-list.tsx';
 import Player from '../player/player.tsx';
-import {ProtectedWrapper} from '../utils/utils.tsx';
+import AddReview from '../review/add-review.tsx';
+import NotFoundPage, { ProtectedWrapper } from '../utils/utils.tsx';
 
 
 function App() {

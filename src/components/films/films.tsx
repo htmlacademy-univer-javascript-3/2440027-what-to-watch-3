@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -11,9 +10,9 @@ import { FilmShortDescription } from '../../types/film';
 import ErrorPage from '../error-page/error-page';
 import { Footer, Header } from '../main-page-utils/utils';
 import MoviesList from '../movie-list/movie-list';
+import MyListButton from '../my-list/my-list-button';
 import Tabs from '../tabs/tabs';
 import NotFoundPage from '../utils/utils';
-import MyListButton from '../my-list/my-list-button';
 
 
 function Film() {
@@ -74,6 +73,7 @@ function Film() {
                   </svg>
                   <span>Play</span>
                 </Link>
+                {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
                 {isAuthorized && <MyListButton filmId={film.id} isFavorite={film.isFavorite!} />}
 
                 <Link to={`/films/${film.id}/review`} className="btn film-card__button" style={{ display: isAuthorized ? 'block' : 'none' }}>

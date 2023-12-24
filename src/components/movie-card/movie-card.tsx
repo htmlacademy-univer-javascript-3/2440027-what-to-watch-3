@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import { Link } from 'react-router-dom';
-import VideoPlayer from '../utils/video-player';
-import useDelayedHover from '../../hooks/use-delayed-hover';
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
+import useDelayedHover from '../../hooks/use-delayed-hover';
+import VideoPlayer from '../utils/video-player';
 
 type MovieCardProps = {
   id: string;

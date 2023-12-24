@@ -1,14 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { fetchMoviesList, fetchFilmDetails, fetchPromoFilm } from './api-actions';
+import { fetchMoviesList, fetchFilmDetails, fetchPromoFilm, login } from './api-actions';
+import { ValidationErrorResponse } from '../types/validation-error';
 
 interface UIState {
   loading: boolean;
   error: string | null;
+  loginError: ValidationErrorResponse | null;
 }
 
 const initialUIState: UIState = {
   loading: false,
   error: null,
+  loginError: null,
 };
 
 export const uiReducer = createReducer(initialUIState, (builder) => {
@@ -45,5 +48,13 @@ export const uiReducer = createReducer(initialUIState, (builder) => {
     .addCase(fetchPromoFilm.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed loading promo movie';
+    })
+    .addCase(login.rejected, (state, action) => {
+      state.loading = false;
+      if (action.payload && typeof action.payload === 'object' && 'errorType' in action.payload) {
+        state.loginError = action.payload as ValidationErrorResponse;
+      } else {
+        state.error = action.error.message || 'Failed login';
+      }
     });
 });

@@ -1,13 +1,29 @@
 import { FilmFullDescription } from '../../types/film';
 
-function OverviewTab({ film }: { film: FilmFullDescription}) {
+function getRatingLevel(rating: number): string {
+  if (rating === 10) {
+    return 'Awesome';
+  } else if (rating >= 8) {
+    return 'Very good';
+  } else if (rating >= 5) {
+    return 'Good';
+  } else if (rating >= 3) {
+    return 'Normal';
+  } else {
+    return 'Bad';
+  }
+}
+
+
+function OverviewTab({ film }: { film: FilmFullDescription }) {
+  const ratingLevel = getRatingLevel(film.rating);
 
   return (
     <div>
       <div className="film-rating">
         <div className="film-rating__score">{film.rating}</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">{film.rating}</span>
+          <span className="film-rating__level">{ratingLevel}</span>
           <span className="film-rating__count">{film.scoresCount} ratings</span>
         </p>
       </div>

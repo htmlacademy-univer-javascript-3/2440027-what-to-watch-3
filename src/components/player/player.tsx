@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -48,6 +47,7 @@ function Player() {
 
       videoRef.current.addEventListener('timeupdate', updateTimeLeft);
       return () => {
+        /* eslint-disable react-hooks/exhaustive-deps */
         videoRef.current?.removeEventListener('timeupdate', updateTimeLeft);
       };
     }
